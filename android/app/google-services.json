@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "162518464734",
+    "project_id": "mod-3-1",
+    "storage_bucket": "mod-3-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162518464734:android:34eeaee9e07bc9015c6a4f",
+        "android_client_info": {
+          "package_name": "com.example.mod3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBNdsYewtmZ4mYGRPAXeF8txQj5V4RVx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
