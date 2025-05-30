@@ -22,17 +22,41 @@ class AuthService {
       return null;
     }
   }
-  //Register
-Future regemail(String email,String pass)async{
-    try{
-      UserCredential result=await _auth.createUserWithEmailAndPassword(email: email, password: pass);
-      User? user=result.user;
+
+  //Anonymous
+  Future signInAnon() async {
+    try {
+      UserCredential result = await _auth.signInAnonymously();
+      User? user = result.user;
       return _FromFB(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
     }
-    catch(e)
-  {
-    print(e.toString());
-    return null;
   }
-}
+
+  //Register
+  Future regemail(String email, String pass) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
+      User? user = result.user;
+      return _FromFB(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+  Future SignInemail(String email, String pass) async {
+    try {
+      UserCredential result=await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      User? user = result.user;
+      return _FromFB(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

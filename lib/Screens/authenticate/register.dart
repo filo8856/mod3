@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mod3/Screens/loading.dart';
 import 'package:mod3/Services/auth.dart';
 class Register extends StatefulWidget {
   final Function toggle;
@@ -12,12 +13,13 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formkey=GlobalKey<FormState>();
+  bool load=false;
   String email = '';
   String pass = '';
   String error='';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return load?Loading():Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 150,
@@ -51,6 +53,27 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SizedBox(height: 120),
                 TextFormField(
+                  style: TextStyle(
+                    fontSize:20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText:'Enter E-mail',
+                    hintStyle: TextStyle(
+                      fontSize:20,
+                      color:Colors.grey,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                  ),
                   validator: (val)=>val!.isEmpty?'Enter Email':null,
                   onChanged: (val) {
                     setState(() {
@@ -60,6 +83,27 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 40),
                 TextFormField(
+                  style: TextStyle(
+                    fontSize:20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText:'Password',
+                    hintStyle: TextStyle(
+                      fontSize:20,
+                      color:Colors.grey,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                  ),
                   validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
                   obscureText: true,
                   onChanged: (val) {
@@ -78,15 +122,25 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.circular(40), // round corners
                     ),
                     onPressed: () async {
+                      setState(() {
+                        load=true;
+                      });
                       if(_formkey.currentState!.validate())
                         {
                           dynamic result= await _auth.regemail(email, pass);
                           if(result==null)
                             {
                               setState(() {
+                                load=false;
                                 error='Invalid Email or password';
                               });
                             }
+                        }
+                      else
+                        {
+                          setState(() {
+                            load=false;
+                          });
                         }
                     },
                     child: Text(

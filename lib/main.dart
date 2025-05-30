@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mod3/Models/user.dart';
+import 'package:mod3/Screens/home/history.dart';
 import 'package:mod3/Screens/home/home.dart';
 import 'package:mod3/Screens/wrapper.dart';
 import 'package:mod3/Services/auth.dart';

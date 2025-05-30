@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mod3/Screens/loading.dart';
 import 'package:mod3/Services/auth.dart';
-
 class SignIn extends StatefulWidget {
   final Function toggle;
   const SignIn({super.key,required this.toggle});
@@ -11,12 +11,14 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
+  bool load=false;
   String email = '';
   String pass = '';
-
+  String error='';
+  final _formkey=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return load?Loading():Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 150,
@@ -45,19 +47,63 @@ class _SignInState extends State<SignIn> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 50),
           child: Form(
-            //key:_formKey,
+            key:_formkey,
             child: Column(
               children: <Widget>[
                 SizedBox(height: 120),
                 TextFormField(
+                  style: TextStyle(
+                    fontSize:20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText:'Enter E-mail',
+                    hintStyle: TextStyle(
+                      fontSize:20,
+                      color:Colors.grey,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                  ),
+                  validator: (val)=>val!.isEmpty?'Enter Email':null,
                   onChanged: (val) {
                     setState(() {
-                      email = val;
+                      email = val.trim();
                     });
                   },
                 ),
                 SizedBox(height: 40),
                 TextFormField(
+                  style: TextStyle(
+                    fontSize:20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText:'Password',
+                    hintStyle: TextStyle(
+                      fontSize:20,
+                      color:Colors.grey,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Colors.black,width:3.0),
+                    ),
+                  ),
+                  validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
                   obscureText: true,
                   onChanged: (val) {
                     setState(() {
@@ -74,7 +120,27 @@ class _SignInState extends State<SignIn> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40), // round corners
                     ),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      setState(() {
+                        load=true;
+                      });
+                      if(_formkey.currentState!.validate())
+                      {
+                        dynamic result= await _auth.SignInemail(email, pass);
+                        if(result==null)
+                        {
+                          setState(() {
+                            load=false;
+                            error='Invalid Email or password';
+                          });
+                        }
+                      }
+                      else {
+                        setState(() {
+                          load = false;
+                        });
+                      }
+                    },
                     child: Text(
                       'Sign In',
                       style: TextStyle(
@@ -84,6 +150,11 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                   ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red,fontSize: 15),
                 ),
               ],
             ),
